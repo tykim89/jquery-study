@@ -15,7 +15,7 @@ var member = {
 		var members = [
 				{
 					no			: 1,
-					email		: 'jojoldu@hamil.com',
+					email		: 'jojoldu@gamil.com',
 					name		: '이동욱',
 					job			: 'web developer',
 					joinDate	: '2015-02-12',
@@ -23,7 +23,7 @@ var member = {
 				},
 				{
 					no			: 2,
-					email		: 'soultomind930@hamil.com',
+					email		: 'soultomind930@gamil.com',
 					name		: '이바우',
 					job			: 'web developer',
 					joinDate	: '2015-02-12',
@@ -31,7 +31,7 @@ var member = {
 				},
 				{
 					no			: 3,
-					email		: 'jusaha1109@hamil.com',
+					email		: 'jusaha1109@gamil.com',
 					name		: '김태영',
 					job			: 'web developer',
 					joinDate	: '2015-02-12',
@@ -39,7 +39,7 @@ var member = {
 				},
 				{
 					no			: 4,
-					email		: 'usdrd90@hamil.com',
+					email		: 'usdrd90@gamil.com',
 					name		: '전옥현',
 					job			: 'web publisher',
 					joinDate	: '2015-05-23',
@@ -47,7 +47,7 @@ var member = {
 				},
 				{
 					no			: 5,
-					email		: 'tlsdbsdk@hamil.com',
+					email		: 'tlsdbsdk@gamil.com',
 					name		: '신윤아',
 					job			: 'web publisher',
 					joinDate	: '2015-07-21',

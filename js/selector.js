@@ -29,7 +29,8 @@ function checkEmailAndPassword(){
 		cPasswordConfirm = checkPasswordConfirm();
 
 	if(cEmail && cPassword && cPasswordConfirm){
-		alert('로그인!');
+//		alert('로그인!');
+		window.location.href = window.location.href.replace('/login.html', '/member.html');
 	}
 }
 

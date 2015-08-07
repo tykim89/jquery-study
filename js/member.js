@@ -6,9 +6,21 @@ $(function(){
 
 var member = {
 
+	memberList : [],
+
+	showModal : function(){
+		$('#memberModal').modal();
+	},
+
 	init : function(){
 		this.makeTbody(this.generateMembers());
 //		console.log(this.generateMembers());
+		
+		$('.memberInfo').click(function(){
+			alert($(this).attr('no'));
+			member.find($(this).attr('no'));
+			member.showModal();
+		});
 	},
 
 	generateMembers : function(){		// javascript 객체 타입
@@ -65,7 +77,9 @@ var member = {
 
 		$.each(members, function(index, member){
 			var $tr = $(document.createElement('tr'));
-
+			$tr.addClass('memberInfo');
+			$tr.attr('no', member.no);
+			
 			for(prop in member){
 				var $td = $(document.createElement('td'));
 //				$td.text(member['no']);
@@ -79,5 +93,13 @@ var member = {
 		});
 
 		$table.append($tbody);
+	},
+
+	find : function(no){
+
+	},
+
+	edit : function(no){
+
 	}
 }

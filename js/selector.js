@@ -5,6 +5,8 @@ $(function(){		// js파일 로딩시 바로 시작시킬 동작들
 
 	$('#btnLogin').click(checkEmailAndPassword);
 	$('font').hide();
+
+	init();
 });
 
 
@@ -17,6 +19,39 @@ function showEmail(){
 	var password = $('#inputPassword').val('');
 	alert(email);
 }
+
+
+function init(){
+
+	var $inputEmail = $('#inputEmail'),
+		$inputPassword = $('#inputPassword'),
+		$inputPasswordConfirm = $('#inputPasswordConfirm');
+
+	$inputEmail.focus();
+
+	$(function(){
+
+		$inputEmail.keydown(function(key){
+			if(key.keyCode == 13){
+				$inputPassword.focus();
+			}
+		});
+
+		$inputPassword.keydown(function(key){
+			if(key.keyCode == 13){
+				$inputPasswordConfirm.focus();
+			}
+		});
+
+		$inputPasswordConfirm.keydown(function(key){
+			if(key.keyCode == 13){
+				checkEmailAndPassword();
+			}
+		});
+
+	});
+}
+
 
 function checkIdAndPw(){
 
@@ -81,6 +116,7 @@ function checkPasswordConfirm(){
 	if(!$inputPasswordConfirm.val()){
 
 		$fontChild.eq(0).show();
+
 		$inputPasswordConfirm.addClass('empty');
 		return false;
 	}else{

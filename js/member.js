@@ -6,27 +6,44 @@ $(function(){
 
 var member = {
 
-	memberList : [],
+	$el : {},
+	list : [],
+	currentData : {},
 
 	showModal : function(){
 		$('#memberModal').modal();
 	},
 
+	closeModal : function(){
+		$('#memberModal').modal('hide');
+	},
+
 	init : function(){
-		this.makeTbody(this.generateMembers());
+		this.list = (this.list.length > 0) ? this.list : this.generateMembers();
+		this.makeTbody(this.list);
 //		console.log(this.generateMembers());
+		this.$el = $('#memberMain');
 		
-		$('.memberInfo').click(function(){
-			alert($(this).attr('no'));
-			member.find($(this).attr('no'));
+
+//		$('.member_info').click(function(){
+//			var idx = $(this).attr('id').slice(7);
+//			member.edit(member.find(idx));
+//			member.showModal();
+//		});
+
+
+		this.$el.on('click', '.member_info', function(){	// 이벤트리스너 : member_info 클래스 영역에 클릭 이벤트를 on 항상 시킨다.
+			var idx = $(this).attr('id').slice(7);
+			member.edit(member.find(idx));
 			member.showModal();
 		});
+
 	},
 
 	generateMembers : function(){		// javascript 객체 타입
 		var members = [
 				{
-					no			: 1,
+					idx			: 1,
 					email		: 'jojoldu@gamil.com',
 					name		: '이동욱',
 					job			: 'web developer',
@@ -34,7 +51,7 @@ var member = {
 					updateDate	: '2015-07-30'
 				},
 				{
-					no			: 2,
+					idx			: 2,
 					email		: 'soultomind930@gamil.com',
 					name		: '이바우',
 					job			: 'web developer',
@@ -42,7 +59,7 @@ var member = {
 					updateDate	: '2015-07-30'
 				},
 				{
-					no			: 3,
+					idx			: 3,
 					email		: 'jusaha1109@gamil.com',
 					name		: '김태영',
 					job			: 'web developer',
@@ -50,7 +67,7 @@ var member = {
 					updateDate	: '2015-07-30'
 				},
 				{
-					no			: 4,
+					idx			: 4,
 					email		: 'usdrd90@gamil.com',
 					name		: '전옥현',
 					job			: 'web publisher',
@@ -58,7 +75,7 @@ var member = {
 					updateDate	: '2015-07-30'
 				},
 				{
-					no			: 5,
+					idx			: 5,
 					email		: 'tlsdbsdk@gamil.com',
 					name		: '신윤아',
 					job			: 'web publisher',
@@ -77,8 +94,8 @@ var member = {
 
 		$.each(members, function(index, member){
 			var $tr = $(document.createElement('tr'));
-			$tr.addClass('memberInfo');
-			$tr.attr('no', member.no);
+			$tr.addClass('member_info');
+			$tr.attr('id', 'member_' + member.idx);
 			
 			for(prop in member){
 				var $td = $(document.createElement('td'));
@@ -95,11 +112,32 @@ var member = {
 		$table.append($tbody);
 	},
 
-	find : function(no){
+	find : function(idx){
+		var members = this.list,
+			res = null;
+
+		$.each(members, function(index, member){
+			if(member.idx == idx){
+				res = member;
+				return false;		// 제이쿼리 each 의 break문 기능
+			}
+		});
+
+		return res;
 
 	},
 
-	edit : function(no){
+	edit : function(member){
+		var member = member,
+			$inputEmail = $('#inputEmail'),
+			$inputName = $('#inputName'),
+			$inputJob = $('#inputJob');
+
+		this.currentData = member;
+		$inputEmail.val(member.email);
+		$inputName.val(member.name);
+		$inputJob.val(member.job);
 
 	}
+
 }

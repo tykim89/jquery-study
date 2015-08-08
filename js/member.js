@@ -3,7 +3,7 @@ $(function(){
 	member.init();
 
 });
-
+// QA 테스트 진행
 var member = {
 
 	$el : {},

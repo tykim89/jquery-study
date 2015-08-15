@@ -18,6 +18,13 @@ var member = {
 		$('#memberModal').modal('hide');
 	},
 
+	reset : function(){
+		this.currentData = {};
+		$('#inputEmail').val('');
+		$('#inputName').val('');
+		$('#inputJob').val('');
+	},
+
 	init : function(){
 		this.list = (this.list.length > 0) ? this.list : this.generateMembers();
 		this.makeTbody(this.list);
@@ -48,6 +55,11 @@ var member = {
 
 		this.$el.find('#btnClose').click(function(){
 			member.closeModal();
+		});
+
+		this.$el.find('#btnAdd').click(function(){
+			member.reset();
+			member.showModal();
 		});
 	},
 
@@ -161,6 +173,12 @@ var member = {
 			$inputEmail = $('#inputEmail'),
 			$inputName = $('#inputName'),
 			$inputJob = $('#inputJob');
+
+		if(!member){
+
+		}else{
+			
+		}
 
 		member.email = $inputEmail.val();
 		member.name = $inputName.val();

@@ -32,12 +32,23 @@ var member = {
 //		});
 
 
-		this.$el.on('click', '.member_info', function(){	// 이벤트리스너 : member_info 클래스 영역에 클릭 이벤트를 on 항상 시킨다.
+		this.$el.on('click', '.member_info', function(){	// 이벤트리스너 : member_info 클래스 영역에 클릭 이벤트를 항상 on 시킨다.
 			var idx = $(this).attr('id').slice(7);
 			member.edit(member.find(idx));
 			member.showModal();
 		});
 
+
+//		this.$el.find('#btnSubmit').click(member.save());	// 무한로딩 발생 : () 즉시 실행 함수
+//		this.$el.find('#btnSubmit').click(member.save);		//
+
+		this.$el.find('#btnSubmit').click(function(){		// function 으로 감싸서 click 이벤트 발동 후 function 발동
+			member.save();									// --> 이후 member.save 발동
+		});
+
+		this.$el.find('#btnClose').click(function(){
+			member.closeModal();
+		});
 	},
 
 	generateMembers : function(){		// javascript 객체 타입
@@ -90,7 +101,12 @@ var member = {
 
 	makeTbody : function(members){
 		var $table = $('#tMember'),
+			$oldTbody = $table.find('tbody'),
 			$tbody = $(document.createElement('tbody'));
+
+		if($oldTbody){
+			$oldTbody.remove();
+		}
 
 		$.each(members, function(index, member){
 			var $tr = $(document.createElement('tr'));
@@ -138,6 +154,38 @@ var member = {
 		$inputName.val(member.name);
 		$inputJob.val(member.job);
 
+	},
+
+	save : function(){
+		var member = this.currentData,
+			$inputEmail = $('#inputEmail'),
+			$inputName = $('#inputName'),
+			$inputJob = $('#inputJob');
+
+		member.email = $inputEmail.val();
+		member.name = $inputName.val();
+		member.job = $inputJob.val();
+		member.updateDate = this.dateFormat();
+
+		this.send(member);
+	},
+
+	send : function(member){
+		this.list[member.idx-1] = member;
+		this.init();
+		this.closeModal();
+	},
+
+	dateFormat : function(date){
+		var date = date || new Date(),
+			year = date.getFullYear(),
+			month = date.getMonth()+1,
+			day = date.getDate();
+
+		month = (month < 10)? '0'+month : month;
+		day = (day < 10)? '0'+day : day;
+
+		return year + '-' + month + '-' + day;
 	}
 
 }

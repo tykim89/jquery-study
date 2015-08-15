@@ -172,18 +172,25 @@ var member = {
 		var member = this.currentData,
 			$inputEmail = $('#inputEmail'),
 			$inputName = $('#inputName'),
-			$inputJob = $('#inputJob');
+			$inputJob = $('#inputJob'),
+			list = this.list,
+			newIdx;
 
-		if(!member){
-
-		}else{
+		if(!member.idx){	// 신규 등록
+			newIdx = list.length+1;
 			
+			member.idx = newIdx;
+			member.email = $inputEmail.val();
+			member.name = $inputName.val();
+			member.job = $inputJob.val();
+			member.joinDate = this.dateFormat();
+			member.updateDate = this.dateFormat();
+		}else{
+			member.email = $inputEmail.val();
+			member.name = $inputName.val();
+			member.job = $inputJob.val();
+			member.updateDate = this.dateFormat();
 		}
-
-		member.email = $inputEmail.val();
-		member.name = $inputName.val();
-		member.job = $inputJob.val();
-		member.updateDate = this.dateFormat();
 
 		this.send(member);
 	},

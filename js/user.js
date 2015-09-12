@@ -46,6 +46,10 @@ var user = {
 		this.$el.find('#btnSubmit').click(function(){
 			user.signUp();
 		});
+
+		this.$el.find('#btnLogin').click(function(){
+			user.login();
+		});
 	},
 
 	showModal : function(){
@@ -133,12 +137,19 @@ var user = {
 		// 3. 이미 등록된 사용자가 아닌가?
 		// find 함수는 email 중복되는지 체크하고 같은 이메일이 있다면 true, 없다면 false
 		if(this.find(email)){
-			alert("중복된 email입니다");
+			alert("이미 가입된 email입니다");
 			return;
 		}
 
 		// 4. 위 검증이 끝나면 회원 가입
-
+		this.save({
+					email : email,
+					password : password,
+					name : name,
+					job : job,
+					joinDate : currentTime,
+					updateDate : currentTime
+		});
 	},
 
 	validate : function(){
@@ -146,7 +157,7 @@ var user = {
 			result = true;
 
 		$.each($signForms, function(index, signForm){
-			var $signForm = $(signForm);	// jQuery 함수 사용을 위해선ㄴ $가 필요
+			var $signForm = $(signForm);	// jQuery 함수 사용을 위해 $가 필요
 
 			if(!$signForm.val()){
 				$signForm.addClass('empty');
@@ -172,8 +183,43 @@ var user = {
 		});
 
 		return result;
-	}
+	},
+	
 
+	save : function(obj){
+		users.push(obj);
+
+		alert('등록 되었습니다');
+		this.closeModal();
+	},
+
+	// 입력창에 입력된 email과 password를 검사해서 일치하면 로그인 alert
+	// 아니면 email & password 확인 alert
+	login : function(){
+		var email = this.$el.find('#loginEmail').val(),
+			password = this.$el.find('#loginPassword').val(),
+			result;
+
+		// login과 signUp을 많이 다르게 갈 경우, 각각의 모듈
+		$.each(users, function(index, value){
+
+			if(email === value.email && password === value.password){
+				result = true;
+				return;
+			}
+		});
+
+		if(result){
+			alert('로그인 성공');
+		}else{
+			alert('email과 password를 확인해주세요');
+		}
+		
+
+		// login과 signUp의 공통 부분을 활용할 경우, 공통 모듈 사용
+
+
+	}
 
 
 

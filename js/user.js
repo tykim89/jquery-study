@@ -6,6 +6,26 @@ $(function(){
 });
 
 
+//DB연동시 삭제
+var users = [];
+var currentTime = new Date();
+users.push({
+		email : '1',
+		password : '1',
+		name : '1',
+		job : '1',
+		joinDate : currentTime,
+		updateDate : currentTime
+});
+users.push({
+		email : '2',
+		password : '2',
+		name : '2',
+		job : '2',
+		joinDate : currentTime,
+		updateDate : currentTime
+});
+
 
 var user = {
 
@@ -104,13 +124,18 @@ var user = {
 
 
 		// 2. password와 passwordConfirm이 같은가? 다르면 패스워드 확인 경고창
-
-		if(password != passwordConfirm){
+		if(password !== passwordConfirm){
 			alert("같은 패스워드를 입력해주세요");
+			return;
 		}
 
 
 		// 3. 이미 등록된 사용자가 아닌가?
+		// find 함수는 email 중복되는지 체크하고 같은 이메일이 있다면 true, 없다면 false
+		if(this.find(email)){
+			alert("중복된 email입니다");
+			return;
+		}
 
 		// 4. 위 검증이 끝나면 회원 가입
 
@@ -121,7 +146,7 @@ var user = {
 			result = true;
 
 		$.each($signForms, function(index, signForm){
-			var $signForm = $(signForm);
+			var $signForm = $(signForm);	// jQuery 함수 사용을 위해선ㄴ $가 필요
 
 			if(!$signForm.val()){
 				$signForm.addClass('empty');
@@ -132,8 +157,22 @@ var user = {
 		});
 
 		return result;
-	}
+	},
 
+	// DB 연동시 수정
+	find : function(email){
+			result = false;
+
+		$.each(users, function(index, user){
+
+			if(email === user.email){
+				result = true;
+				return;
+			}
+		});
+
+		return result;
+	}
 
 
 

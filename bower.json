@@ -1,0 +1,25 @@
+{
+  "name": "jqeury-study",
+  "version": "0.0.0",
+  "description": "front project for jquery study",
+  "keywords": [
+    "jquery",
+    "angular"
+  ],
+  "authors": [
+    "jusaha@naver.com"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/tykim89/jquery-study",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "jquery": "~2.1.4"
+  }
+}

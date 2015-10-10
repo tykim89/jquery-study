@@ -3,7 +3,7 @@ $(function(){
 });
 
 var print = function(){
-	$('#target').keypress(function(e){
-		$('#printArea').text(e.keyVCode);
+	$('#target').keyup(function(){
+		$('#printArea').text($('#target').val());
 	});
 }

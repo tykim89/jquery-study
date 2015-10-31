@@ -76,50 +76,6 @@ var user = {
 		// 빈칸이 있으면 해당 입력창에 강조효과 (empty 클래스) 추가
 		// 
 		// 저장, 실패 경고창
-
-		/////* if 분기문으로 */////
-/*
-		var $email = this.$el.find('#inputEmail'),
-			$password = this.$el.find('#inputPassword'),
-			$passwordConfirm = this.$el.find('#inputPasswordConfirm'),
-			$name = this.$el.find('#inputName'),
-			$job = this.$el.find('#inputJob');
-
-		if(!$email.val() || !$password.val() || !$passwordConfirm.val() || !$name.val() || !$job.val()){
-			alert("필수 항목을 모두 입력해주세요.");
-
-			if(!$email.val()){
-				$email.addClass('empty');
-			}else{
-				$email.removeClass('empty');
-			}
-
-			if(!$password.val()){
-				$password.addClass('empty');
-			}else{
-				$password.removeClass('empty');
-			}
-
-			if(!$passwordConfirm.val()){
-				$passwordConfirm.addClass('empty');
-			}else{
-				$passwordConfirm.removeClass('empty');
-			}
-
-			if(!$name.val()){
-				$name.addClass('empty');
-			}else{
-				$name.removeClass('empty');
-			}
-
-			if(!$job.val()){
-				$job.addClass('empty');
-			}else{
-				$job.removeClass('empty');
-			}
-
-		}
-*/
 		
 		if(!this.validate()){
 			alert("모든 항목을 입력해주세요");
@@ -136,12 +92,7 @@ var user = {
 
 		// 3. 이미 등록된 사용자가 아닌가?
 		// find 함수는 email 중복되는지 체크하고 같은 이메일이 있다면 true, 없다면 false
-		if(this.find(email)){
-			alert("이미 가입된 email입니다");
-			return;
-		}
-
-		// 4. 위 검증이 끝나면 회원 가입
+		
 		this.save({
 					email : email,
 					password : password,
@@ -171,57 +122,82 @@ var user = {
 	},
 
 	// DB 연동시 수정
-	find : function(email){
-			result = false;
+	// 사용안함
+	find : function(obj){
+		var result;
+		var _ = this;
 
-		$.each(users, function(index, user){
+		$.ajax({
+			method: 'POST',
+			url: 'email',
+			data: obj,
+			dataType: 'json',
+			success: function(data){
+				alert(data.status);
 
-			if(email === user.email){
-				result = true;
-				return;
+				if(!data.status){
+					_.save(obj);
+					_.closeModal();
+				}else{
+					alert('이미 가입된 사용자입니다.');
+				}
+			}
+
+		});
+	},
+	
+	// DB 연동시 수정
+	save : function(obj){
+		var _ = this;
+
+		$.ajax({
+			method : 'POST',
+			url : 'user',
+			data : obj,
+			dataType : 'json',
+			success : function(data){
+
+				if(data.status){
+					alert('등록 되었습니다.');
+					_.closeModal();
+				}else{
+					alert('이미 가입된 사용자입니다.');
+				}
 			}
 		});
 
-		return result;
-	},
-	
-
-	save : function(obj){
-		users.push(obj);
-
-		alert('등록 되었습니다');
-		this.closeModal();
 	},
 
 	// 입력창에 입력된 email과 password를 검사해서 일치하면 로그인 alert
 	// 아니면 email & password 확인 alert
 	login : function(){
 		var email = this.$el.find('#loginEmail').val(),
-			password = this.$el.find('#loginPassword').val(),
-			result;
+			password = this.$el.find('#loginPassword').val();
 
-		// login과 signUp을 많이 다르게 갈 경우, 각각의 모듈
-		$.each(users, function(index, value){
+		/*
+			1. ajax로 email과 패스워드 전송
+			2. 해당 회원이 존재 && 패스워드 일치 alert(성공)
+			   - 없으면 alere(확인하라고)
 
-			if(email === value.email && password === value.password){
-				result = true;
-				return;
+		*/
+
+		$.ajax({
+			method : 'POST',
+			url : 'login',
+			data : {
+				email : email,
+				password : password
+			},
+			dataType : 'json',
+			success : function(data){
+				if(data.status){
+					location.href=location.origin+"/board/list";
+				}else{
+					alert('이메일과 비밀번호를 확인해주세요.');
+				}
 			}
 		});
 
-		if(result){
-			alert('로그인 성공');
-		}else{
-			alert('email과 password를 확인해주세요');
-		}
-		
-
-		// login과 signUp의 공통 부분을 활용할 경우, 공통 모듈 사용
-
-
 	}
-
-
-
 
 }

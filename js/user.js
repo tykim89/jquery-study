@@ -146,7 +146,7 @@ var user = {
 		});
 	},
 	
-
+	// DB 연동시 수정
 	save : function(obj){
 		var _ = this;
 
@@ -191,7 +191,7 @@ var user = {
 			dataType : 'json',
 			success : function(data){
 				if(data.status){
-					alert('로그인');
+					location.href=location.origin+"/board/list";
 				}else{
 					alert('이메일과 비밀번호를 확인해주세요.');
 				}
@@ -199,6 +199,5 @@ var user = {
 		});
 
 	}
-
 
 }

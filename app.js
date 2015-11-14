@@ -3,6 +3,10 @@ var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var mongoskin = require('mongoskin');
+
+var db = mongoskin.db("mongodb://localhost:27017/front", {native_parser:true});
+db.bind('users');
 
 /*
 	DB 연동시 삭제될 부분
@@ -38,11 +42,17 @@ app.get('/', function(req, res){
 	res.sendFile(path.join(__dirname + '/view/login.html'));
 });
 
-app.get('/user', function(req, res) {
-    res.send(users);
+app.get('/user', function(req, res){
+	db.users.find().toArray(function(err, users){
+		if(err){
+			console.log('get user list error');
+		}
+		
+		res.send(users);
+	});
 });
 
-app.get('/user/:idx', function(req, res) {
+app.get('/user/:idx', function(req, res){
     res.send(users[req.params.idx]);
 });
 
@@ -53,18 +63,40 @@ app.post('/user', function(req, res){
 		status : true
 	};
 
-	for(var i=0;i<users.length;i++){
-		if(obj.email === users[i].email){
-			result.status = false;
-			break;
+	console.log('진입접');
+	db.users.findOne({email:obj.email}, function(err, user){
+		if(err){
+			console.log('user find error in save');
 		}
-	}
+		console.log('find');
 
-	if(result.status){
-		users.push(obj);
-	}
+		if(!user){
+			db.users.save(obj, function(err){
+				if(err){
+					console.log('user save error');
+				}
+				console.log('save');
+				result.status = true;
+				res.send(result);
+			});
+		}else{
+			res.send(result);
+		}
+	});
+	console.log('종료점');
 
-	res.send(result);
+	// for(var i=0;i<users.length;i++){
+	// 	if(obj.email === users[i].email){
+	// 		result.status = false;
+	// 		break;
+	// 	}
+	// }
+
+	// if(result.status){
+	// 	users.push(obj);
+	// }
+
+	// res.send(result);
 });
 
 app.post('/login', function(req, res){
